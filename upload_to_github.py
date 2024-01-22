@@ -11,8 +11,6 @@ def main(TOKEN, GITHUB_REPO, branch):
 
     # get set (the lookup will be O(1)) of files in repo
     repo = g.get_user().get_repo(GITHUB_REPO)
-    # repo = g.get_user().get_repo(GITHUB_REPO)
-    # repo = g.get_repo("CatUnderTheLeaf/"+GITHUB_REPO)
     all_files = set()
     contents = repo.get_contents("")
     while contents:
