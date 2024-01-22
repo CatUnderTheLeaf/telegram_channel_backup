@@ -58,24 +58,3 @@ if __name__ == '__main__':
             exit(1)
 
     asyncio.run(main(config['bot_token']))
-
-# Update
-#     channel_post=Message
-#         channel_chat_created=False,
-#         chat=Chat
-#             id=-1002143391780, 
-#             title='Создай свой квест', 
-#             type=<ChatType.CHANNEL>, 
-#             username='ssk_ru', 
-#         date=datetime.datetime(2024, 1, 18, 11, 23, 53, tzinfo=datetime.timezone.utc), 
-#         delete_chat_photo=False, 
-#         group_chat_created=False, 
-#         message_id=11, 
-#         sender_chat=Chat
-#             id=-1002143391780, 
-#             title='Создай свой квест', 
-#             type=<ChatType.CHANNEL>, 
-#             username='ssk_ru', 
-#         supergroup_chat_created=False, 
-#         text='dfdfdf'
-#     update_id=675905941
