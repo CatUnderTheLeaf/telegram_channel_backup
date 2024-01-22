@@ -4,6 +4,8 @@ The idea is very simple: you have a Telegram channel and just want to automatica
 
 Sounds easy. But how to do this with less hassle and without registering of additional Telegram and GitHub Apps IDs? Just follow these steps.
 
+## Usage
+
 ### 1. Create a Telegram bot and get its token
 
 - In Telegram find `@BotFather`, Telegram’s tool for creating and managing bots.
@@ -36,4 +38,27 @@ Follow the [instructions](https://docs.github.com/en/actions/security-guides/usi
 - Replace `CHANNEL_REPO` and `BRANCH` placeholders with your names (13-14 lines)
 - Action is triggered on schedule at 23:30 UTC every day (line 7). Look [here](https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule) if you want to change it.
 
- 
+## How it works
+
+#### Action workflow
+
+- action is triggered on schedule at 23:30 UTC every day
+- installs `python-telegram-bot` and `PyGithub`
+- makes `_posts` folder for posts
+- run `backup_telegram_channel.py` with usage of `BOT_TOKEN`
+    > `python-telegram-bot` is a wrapper of the [Telegram Bot API](https://core.telegram.org/bots/api). Incoming channel updates are stored on the server **no longer** than 24 hours. That's why action is triggered once every day. If you need more functionality, then look into full [Telegram API](https://core.telegram.org/api#telegram-api), register new Telegram App and use `api_id` and an `api_hash` for authentification. This script should be rewritten for usage of another API.
+- run `upload_to_github.py` with usage of `AUTH_TOKEN`
+
+#### backup_telegram_channel.py
+
+- gets channel updates for last 24 hours and saves as dictionary of the newly created or the last version of updated posts
+- save all posts from dictionary in the `YYYY-MM-DD-postId.md` format in `_posts` folder
+
+#### upload_to_github.py
+
+- gets all files in your channel backup repository as a set
+- commits and pushes all posts from `_posts` folder with right commit message (updated or created post)
+
+#### (Optional, not used in the action workflow) backup_telegram_channel_history.py
+
+If you already have a channel and there are already posts older than last 24 hours, then this optional script is for you.
