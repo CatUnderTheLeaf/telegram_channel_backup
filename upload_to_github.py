@@ -40,10 +40,10 @@ def main(TOKEN, GITHUB_REPO, branch):
 
         if file_with_dir in all_files:
             contents = repo.get_contents(file_with_dir)
-            # repo.update_file(contents.path, "updating post " + postId, content, contents.sha, branch)
+            repo.update_file(contents.path, "updating post " + postId, content, contents.sha, branch)
             print(file_with_dir + ' UPDATED')
         else:
-            # repo.create_file(file_with_dir, "creating post " + postId, content, branch)
+            repo.create_file(file_with_dir, "creating post " + postId, content, branch)
             print(file_with_dir + ' CREATED')
 
     # close connections after use
