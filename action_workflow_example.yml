@@ -1,0 +1,39 @@
+# Github Action workflow that gets last updates from telegram channel with python-telegram-bot and commits them to your repository with PyGithub
+
+name: backup workflow
+
+on:
+  schedule:
+    - cron: '30 23 * * *'
+  
+permissions: write-all
+
+# replace with your names
+env:
+  CHANNEL_REPO: your repository name
+  BRANCH: branch name
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Install Dependencies
+        run: |
+          pip install python-telegram-bot --upgrade
+          pip install PyGithub
+          
+      - name: Download all three files and make posts dir
+        run: |
+          curl https://raw.githubusercontent.com/CatUnderTheLeaf/telegram_channel_backup/main/backup_telegram_channel.py -o backup_telegram_channel.py
+          curl https://raw.githubusercontent.com/CatUnderTheLeaf/telegram_channel_backup/main/upload_to_github.py -o upload_to_github.py
+          mkdir _posts
+
+      - name: Run backup
+        env:
+          BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
+        run: python backup_telegram_channel.py bot_token="$BOT_TOKEN"
+
+      - name: Run upload
+        env:
+          AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
+        run: python upload_to_github.py auth_token="$AUTH_TOKEN" repo=$CHANNEL_REPO branch=$BRANCH
