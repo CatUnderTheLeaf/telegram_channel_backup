@@ -21,19 +21,21 @@ jobs:
         run: |
           pip install python-telegram-bot --upgrade
           pip install PyGithub
-          
-      - name: Download all three files and make posts dir
-        run: |
-          curl https://raw.githubusercontent.com/CatUnderTheLeaf/telegram_channel_backup/main/backup_telegram_channel.py -o backup_telegram_channel.py
-          curl https://raw.githubusercontent.com/CatUnderTheLeaf/telegram_channel_backup/main/upload_to_github.py -o upload_to_github.py
-          mkdir _posts
+                    
+      - name: Checkout telegram_channel_backup repo
+        uses: actions/checkout@v4
+        with:
+          repository: CatUnderTheLeaf/telegram_channel_backup
+          path: telegram_channel_backup
 
       - name: Run backup
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: python backup_telegram_channel.py bot_token="$BOT_TOKEN"
+        run: |
+          mkdir telegram_channel_backup/_posts
+          python telegram_channel_backup/backup_telegram_channel.py bot_token="$BOT_TOKEN"
 
       - name: Run upload
         env:
           AUTH_TOKEN: ${{ secrets.AUTH_TOKEN }}
-        run: python upload_to_github.py auth_token="$AUTH_TOKEN" repo=$CHANNEL_REPO branch=$BRANCH
+        run: python telegram_channel_backup/upload_to_github.py auth_token="$AUTH_TOKEN" repo=$CHANNEL_REPO branch=$BRANCH
