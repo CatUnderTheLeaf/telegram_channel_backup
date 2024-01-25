@@ -21,7 +21,7 @@ jobs:
         run: |
           pip install python-telegram-bot --upgrade
           pip install PyGithub
-                    
+          
       - name: Checkout telegram_channel_backup repo
         uses: actions/checkout@v4
         with:
@@ -31,9 +31,7 @@ jobs:
       - name: Run backup
         env:
           BOT_TOKEN: ${{ secrets.BOT_TOKEN }}
-        run: |
-          mkdir telegram_channel_backup/_posts
-          python telegram_channel_backup/backup_telegram_channel.py bot_token="$BOT_TOKEN"
+        run: python telegram_channel_backup/backup_telegram_channel.py bot_token="$BOT_TOKEN"
 
       - name: Run upload
         env:
