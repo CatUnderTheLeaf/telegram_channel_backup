@@ -62,7 +62,7 @@ class Posts:
                     f.write(r.content)
 
                 # update post text with relative links to images
-                text = '[!image](_images/'+f_name+')\n\n' + text
+                text = '![image](../_images/'+f_name+')\n\n' + text
 
             with open(full_f_name, 'w') as writer:
                 writer.write(text)
