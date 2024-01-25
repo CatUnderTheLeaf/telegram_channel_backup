@@ -20,6 +20,8 @@ class Posts:
     
     def saveAsFiles(self):
         full_path = os.path.dirname(os.path.realpath(__file__))
+        folder = os.path.join(full_path, "_posts")
+        os.makedirs(folder, exist_ok=True)
         for post in self.getPosts().values():
             # f_name = YYYY-MM-DD-name-of-post.ext        
             f_name = post['date'].strftime('%Y-%m-%d-postId-')+str(post['id'])+'.md'
