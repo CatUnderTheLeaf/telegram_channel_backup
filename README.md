@@ -4,7 +4,7 @@ The idea is very simple: you have a Telegram channel and just want to automatica
 
 Sounds easy. But how to do this with less hassle and without registering of additional Telegram and GitHub Apps IDs? Just follow these steps.
 
-> Now it only backups text posts and posts with single image. Update for backuping posts with other types or number of media will come later.
+> Now it only backups text posts, post-images and text posts with images. Update for backuping posts with other types of media will come later.
 
 ## Usage
 
