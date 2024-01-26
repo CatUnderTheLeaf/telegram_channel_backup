@@ -15,7 +15,9 @@ class Posts:
             'id': post.message_id,
             'text': post.text,
             'date': post.date,
-            'caption': post.caption
+            'caption': post.caption,
+            'img_url': '',
+            'media_group_id': post.media_group_id
         }
         if post.photo:
             max_size = 0
@@ -30,8 +32,6 @@ class Posts:
     def getPosts(self):
         return self._posts
     
-    
-    
     def saveAsFiles(self):
         full_path = os.path.dirname(os.path.realpath(__file__))
         folder = os.path.join(full_path, "_posts")
@@ -44,10 +44,11 @@ class Posts:
             full_f_name = os.path.join(full_path, "_posts", f_name)
 
             # if post has images then all text is in 'caption'
-            text = post['text'] if post['text'] else post['caption']
+            text = post['text'] if post['text'] else ''
+            text = post['caption'] if post['caption'] else text
 
             # download images if needed
-            if 'img_url' in post.keys():
+            if post['img_url']:
                 # create HTTP response object
                 r = requests.get(post['img_url'])
                 
@@ -60,6 +61,10 @@ class Posts:
                 full_image_name = os.path.join(image_dir, f_name)
                 with open(full_image_name,'wb') as f: 
                     f.write(r.content)
+
+                # add media_group_id if images are grouped
+                if post['media_group_id']:
+                    text = 'media_group_id = ' + post['media_group_id'] + '\n\n' + text
 
                 # update post text with relative links to images
                 text = '![image](../_images/'+f_name+')\n\n' + text
