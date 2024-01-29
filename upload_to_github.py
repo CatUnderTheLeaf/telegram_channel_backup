@@ -47,23 +47,24 @@ def main(TOKEN, GITHUB_REPO, branch):
     # upload images as seperate commits
     image_prefix = '_images'
     full_image_dir_name = os.path.join(full_path, image_prefix)
-    image_list = os.listdir(full_image_dir_name)
-
-    for image in image_list:
-        file_with_dir = os.path.join(image_prefix, image)
-        full_f_name = os.path.join(full_path, file_with_dir)
-        with open(full_f_name, 'rb') as reader:
-            content = reader.read()
-        
-        if file_with_dir in all_files:
-            # I don't think that images are updated
-            # but just in case
-            contents = repo.get_contents(file_with_dir)
-            repo.update_file(contents.path, "updating image", content, contents.sha, branch)
-            print(file_with_dir + ' UPDATED')
-        else:
-            repo.create_file(file_with_dir, "creating image", content, branch)
-            print(file_with_dir + ' CREATED')
+    if os.path.isdir(full_image_dir_name):
+        image_list = os.listdir(full_image_dir_name)
+    
+        for image in image_list:
+            file_with_dir = os.path.join(image_prefix, image)
+            full_f_name = os.path.join(full_path, file_with_dir)
+            with open(full_f_name, 'rb') as reader:
+                content = reader.read()
+            
+            if file_with_dir in all_files:
+                # I don't think that images are updated
+                # but just in case
+                contents = repo.get_contents(file_with_dir)
+                repo.update_file(contents.path, "updating image", content, contents.sha, branch)
+                print(file_with_dir + ' UPDATED')
+            else:
+                repo.create_file(file_with_dir, "creating image", content, branch)
+                print(file_with_dir + ' CREATED')
 
     # close connections after use
     g.close()
