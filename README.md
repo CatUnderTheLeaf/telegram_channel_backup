@@ -4,7 +4,7 @@ The idea is very simple: you have a Telegram channel and just want to automatica
 
 Sounds easy. But how to do this with less hassle and without registering of additional Telegram and GitHub Apps IDs? Just follow these steps.
 
-> Now it only backups text posts, post-images and text posts with images. Update for backuping posts with other types of media will come later.
+> Now it only backups text posts, post-images, text posts with images and also downloads your telegraph articles in `html` format. Update for backuping posts with other types of media will come later.
 
 ## Usage
 
@@ -63,13 +63,15 @@ Follow the [instructions](https://docs.github.com/en/actions/security-guides/usi
 
 #### (Optional, not used in the action workflow) backup_telegram_channel_history.py
 
-If you already have a channel and there are already posts older than last 24 hours, then this optional script is for you. You need to have Python3 and Telegram Desktop installed.
+If you already have a channel and there are already posts older than last 24 hours, then this optional script is for you. You need to have Python3 and Telegram Desktop installed. Telegraph and BeautifulSoup are used to prettify html string from Telegraph articles.
 
 - Checkout this repository and install necessary dependancies:
    ```
    $ git clone https://github.com/CatUnderTheLeaf/telegram_channel_backup.git
    
    $ pip install PyGithub
+   $ pip install 'telegraph[aio]'
+   $ pip install beautifulsoup4
    
    # create folder for old posts in json format
    $ cd telegram_channel_backup
@@ -79,7 +81,8 @@ If you already have a channel and there are already posts older than last 24 hou
 - Convert posts and upload them to your repository:
    ```
    # convert json format to posts in the `YYYY-MM-DD-postId.md` format in `_posts` folder
-   $ python backup_telegram_channel_history.py
+   # json_dump is a folder with dumped history and images
+   $ python backup_telegram_channel_history.py dump_dir=json_dump
    
    # replace placeholders for actual values
    $ python upload_to_github.py auth_token=$AUTH_TOKEN repo=$CHANNEL_REPO branch=$BRANCH
