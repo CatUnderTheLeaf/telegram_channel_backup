@@ -21,6 +21,8 @@ jobs:
         run: |
           pip install python-telegram-bot --upgrade
           pip install PyGithub
+          pip install 'telegraph[aio]'
+          pip install beautifulsoup4
           
       - name: Checkout telegram_channel_backup repo
         uses: actions/checkout@v4
