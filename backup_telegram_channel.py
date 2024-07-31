@@ -78,6 +78,8 @@ async def main(BOT_TOKEN):
     async with bot:
         updates = (await bot.get_updates())
         for update in updates:
+
+            post = None
             # take into account only new and updated posts
             if update.channel_post:
                 post = posts.addPost(update.channel_post)
@@ -85,7 +87,7 @@ async def main(BOT_TOKEN):
                 post = posts.addPost(update.edited_channel_post)
             
             # retrieve image urls if needed
-            if 'photo_id' in post.keys():
+            if post is not None and 'photo_id' in post.keys():
                 ret = (await bot.getFile(file_id=post['photo_id']))
                 url = ret.file_path
                 post['img_url'] = url
